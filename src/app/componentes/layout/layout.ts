@@ -3,6 +3,7 @@ import { faUser, faTimes, faCheck, faAdd, faCircle, faPencil } from '@fortawesom
 import {IconDefinition} from '@fortawesome/angular-fontawesome';
 import {ToastrService} from 'ngx-toastr';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-layout',
@@ -19,13 +20,27 @@ export class Layout implements OnInit {
   public faCircle: IconDefinition = faCircle;
   public faPencil: IconDefinition = faPencil;
 
+  public userControl!: FormControl;
+  public userForm!: FormGroup;
 
   constructor(
     private toastr: ToastrService,
-    private modal: NgbModal
+    private modal: NgbModal,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.userControl = new FormControl('', [Validators.required]);
+
+    this.userForm = this.fb.group({
+      user: this.userControl
+    });
+  }
+
+  public submitUserForm(): void {
+    const userName: string = this.userForm.value['user'];
+    this.toastr.success(`User: ${userName}`);
+    this.userForm.reset()
   }
 
   public openToastr(): void {
