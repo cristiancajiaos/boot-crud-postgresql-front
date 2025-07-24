@@ -1,21 +1,64 @@
 <section class="layout">
   <h2>
-    <fa-icon [icon]="faUser"></fa-icon>
+    <fa-icon [icon]="faUser" [fixedWidth]="true"></fa-icon>
     Users Admin
   </h2>
 
-  <div class="row">
-    <div class="col-12 col-sm-6">
-      <button class="btn btn-primary "(click)="openToastr()">
-        Open Toastr
-      </button>
+  <section class="users-form">
+    <form>
+      <div class="col-12 col-lg-6">
+        <div class="form-group mb-3">
+          <label for="userName">Nombre de usuario</label>
+          <input type="text" class="form-control" id="userName" name="userName"/>
+        </div>
+      </div>
+      <div class="offset-lg-6">
+
+      </div>
+      <div class="col-12">
+        <div class="form-group mb-3">
+          <button type="submit" class="btn btn-primary">
+            <fa-layers [fixedWidth]="true">
+              <fa-icon [icon]="faUser"></fa-icon>
+              <fa-icon [icon]="faCircle" class="text-black" transform="shrink-7 down-7 right-7"></fa-icon>
+              <fa-icon [icon]="faAdd" class="text-white" transform="shrink-7 down-8 right-8"></fa-icon>
+            </fa-layers>
+            Añadir usuario
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <hr/>
+
+  <section class="users-table">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>N</td>
+          <td>User Name</td>
+          <td>
+            <button type="button" class="btn" ngbTooltip="Editar usuario" (click)="editUser()">
+              <fa-icon [icon]="faPencil" class="text-primary" [fixedWidth]="true"></fa-icon>
+            </button>
+            <button type="button" class="btn" ngbTooltip="Eliminar usuario" (click)="deleteUser(deleteModal)">
+              <fa-icon [icon]="faTimes" class="text-danger" [fixedWidth]="true"></fa-icon>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="col-6 col-sm-6">
-      <button class="btn btn-primary" (click)="openModal(deleteModal)">
-        Open Modal
-      </button>
-    </div>
-  </div>
+  </section>
 </section>
 
 <ng-template #deleteModal let-modal>

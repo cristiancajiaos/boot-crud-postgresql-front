@@ -1,5 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import { faUser, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faTimes, faCheck, faAdd, faCircle, faPencil } from '@fortawesome/free-solid-svg-icons';
 import {IconDefinition} from '@fortawesome/angular-fontawesome';
 import {ToastrService} from 'ngx-toastr';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -15,6 +15,10 @@ export class Layout implements OnInit {
   public faUser: IconDefinition = faUser;
   public faTimes: IconDefinition = faTimes;
   public faCheck: IconDefinition = faCheck;
+  public faAdd: IconDefinition = faAdd;
+  public faCircle: IconDefinition = faCircle;
+  public faPencil: IconDefinition = faPencil;
+
 
   constructor(
     private toastr: ToastrService,
@@ -28,20 +32,24 @@ export class Layout implements OnInit {
     this.toastr.success("Toastr abierto");
   }
 
-  public openModal(content: TemplateRef<any>): void {
+  public editUser(): void {
+    this.toastr.success('editUser()');
+  }
+
+  public deleteUser(content: TemplateRef<any>): void {
     this.modal.open(content,
       {
         size: 'lg',
-        fullscreen: 'lg',
         keyboard: false,
         backdrop: 'static'
       }
     ).result
     .then((resolve) => {
+      // Si
       this.toastr.success(resolve);
     })
     .catch((reject) => {
-      this.toastr.error(reject);
+      // No
     });
 
   }
