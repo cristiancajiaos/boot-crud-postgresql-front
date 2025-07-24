@@ -86,11 +86,14 @@ export class Layout implements OnInit {
       }
     ).result
     .then((resolve) => {
-      // Si
-      this.toastr.success(resolve);
+      this.userService.deleteUser(userId).then((user) => {
+        this.toastr.success(`Usuario eliminado exitosamente`);
+        this.getUsers();
+      }).catch((reject) => {
+        this.toastr.error(`Hubo un error al eliminar el usuario`);
+      });
     })
     .catch((reject) => {
-      // No
     });
 
   }

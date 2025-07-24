@@ -18,7 +18,7 @@ export class UserService {
     return await lastValueFrom(this.http.get<User[]>(`${this.baseUrl}`));
   }
 
-  public async createUser(user: User) {
+  public async createUser(user: User): Promise<User> {
     return await lastValueFrom(this.http.post<User>(
       `${this.baseUrl}`,
       user,
@@ -27,6 +27,10 @@ export class UserService {
         'Content-Type':'application/json'
       }
     }));
+  }
+
+  public async deleteUser(userId: number): Promise<User> {
+    return await lastValueFrom(this.http.delete<User>(`${this.baseUrl}/${userId}`));
   }
 
 }
