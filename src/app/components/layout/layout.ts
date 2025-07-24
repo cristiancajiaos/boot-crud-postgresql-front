@@ -1,9 +1,11 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import { faUser, faTimes, faCheck, faAdd, faCircle, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faTimes, faCheck, faAdd, faCircle, faPencil, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import {IconDefinition} from '@fortawesome/angular-fontawesome';
 import {ToastrService} from 'ngx-toastr';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UserService} from '../../services/user-service';
+import {User} from '../../interfaces/user';
 
 @Component({
   selector: 'app-layout',
@@ -19,6 +21,11 @@ export class Layout implements OnInit {
   public faAdd: IconDefinition = faAdd;
   public faCircle: IconDefinition = faCircle;
   public faPencil: IconDefinition = faPencil;
+  public faSpinner: IconDefinition = faSpinner;
+
+  public loadingUsers: boolean = false;
+
+  public users: User[] = [];
 
   public userControl!: FormControl;
   public userForm!: FormGroup;
@@ -26,7 +33,8 @@ export class Layout implements OnInit {
   constructor(
     private toastr: ToastrService,
     private modal: NgbModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +42,18 @@ export class Layout implements OnInit {
 
     this.userForm = this.fb.group({
       user: this.userControl
+    });
+
+    this.getUsers();
+  }
+
+  public getUsers(): void {
+    this.loadingUsers = true;
+    this.userService.getUsers().then((users) => {
+      this.users = users;
+      this.loadingUsers = false;
+    }).catch((reject) => {
+      this.toastr.error("Hubo un error al obtener los usuarios");
     });
   }
 
@@ -43,15 +63,11 @@ export class Layout implements OnInit {
     this.userForm.reset()
   }
 
-  public openToastr(): void {
-    this.toastr.success("Toastr abierto");
+  public editUser(user: User): void {
+    this.toastr.success(`User ID: ${user.id}, User Name: ${user.name}`);
   }
 
-  public editUser(): void {
-    this.toastr.success('editUser()');
-  }
-
-  public deleteUser(content: TemplateRef<any>): void {
+  public deleteUser(userId: number, content: TemplateRef<any>): void {
     this.modal.open(content,
       {
         size: 'lg',

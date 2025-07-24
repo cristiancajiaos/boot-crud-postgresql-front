@@ -38,31 +38,39 @@
   <hr/>
 
   <section class="users-table">
-    <div class="table-responsive">
-      <table class="table table-bordered">
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>N</td>
-          <td>User Name</td>
-          <td>
-            <button type="button" class="btn" ngbTooltip="Editar usuario" (click)="editUser()">
-              <fa-icon [icon]="faPencil" class="text-primary" [fixedWidth]="true"></fa-icon>
-            </button>
-            <button type="button" class="btn" ngbTooltip="Eliminar usuario" (click)="deleteUser(deleteModal)">
-              <fa-icon [icon]="faTimes" class="text-danger" [fixedWidth]="true"></fa-icon>
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <ng-container *ngIf="loadingUsers">
+      <p>
+        <fa-icon [icon]="faSpinner" animation="spin"></fa-icon>
+        Cargando...
+      </p>
+    </ng-container>
+    <ng-container *ngIf="!loadingUsers">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{user.id}}</td>
+            <td>{{user.name}}</td>
+            <td>
+              <button type="button" class="btn" ngbTooltip="Editar usuario" (click)="editUser(user)">
+                <fa-icon [icon]="faPencil" class="text-primary" [fixedWidth]="true"></fa-icon>
+              </button>
+              <button type="button" class="btn" ngbTooltip="Eliminar usuario" (click)="deleteUser(user.id, deleteModal)">
+                <fa-icon [icon]="faTimes" class="text-danger" [fixedWidth]="true"></fa-icon>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
   </section>
 </section>
 
