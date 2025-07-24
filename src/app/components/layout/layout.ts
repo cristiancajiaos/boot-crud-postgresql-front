@@ -5,7 +5,7 @@ import {ToastrService} from 'ngx-toastr';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../services/user-service';
-import {User} from '../../interfaces/user';
+import {User} from '../../classes/user';
 
 @Component({
   selector: 'app-layout',
@@ -59,8 +59,18 @@ export class Layout implements OnInit {
 
   public submitUserForm(): void {
     const userName: string = this.userForm.value['user'];
-    this.toastr.success(`User: ${userName}`);
-    this.userForm.reset()
+
+    let user = new User();
+    user.name = userName;
+
+    this.userService.createUser(user).then((user) => {
+      this.toastr.success(`Usuario creado exitosamente`);
+      this.getUsers();
+    }).catch((reject) => {
+      this.toastr.error(`Hubo un error al crear el usuario`);
+    });
+
+    this.userForm.reset();
   }
 
   public editUser(user: User): void {

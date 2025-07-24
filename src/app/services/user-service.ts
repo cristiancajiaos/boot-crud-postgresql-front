@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {User} from '../interfaces/user';
+import {User} from '../classes/user';
 import {lastValueFrom} from 'rxjs';
 
 @Injectable({
@@ -8,7 +8,7 @@ import {lastValueFrom} from 'rxjs';
 })
 export class UserService {
 
-  private baseUrl = "http://localhost:8090/users";
+  private baseUrl = "http://localhost:8091/users";
 
   constructor(
     private http: HttpClient
@@ -16,6 +16,17 @@ export class UserService {
 
   public async getUsers(): Promise<User[]> {
     return await lastValueFrom(this.http.get<User[]>(`${this.baseUrl}`));
+  }
+
+  public async createUser(user: User) {
+    return await lastValueFrom(this.http.post<User>(
+      `${this.baseUrl}`,
+      user,
+      {
+      headers: {
+        'Content-Type':'application/json'
+      }
+    }));
   }
 
 }
