@@ -22,13 +22,20 @@
       </div>
       <div class="col-12">
         <div class="form-group mb-3">
-          <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
+          <button type="submit" class="btn btn-primary me-2" [disabled]="userForm.invalid">
             <fa-layers [fixedWidth]="true">
               <fa-icon [icon]="faUser"></fa-icon>
-              <fa-icon [icon]="faCircle" class="text-black" transform="shrink-7 down-7 right-7"></fa-icon>
-              <fa-icon [icon]="faAdd" class="text-white" transform="shrink-7 down-8 right-8"></fa-icon>
+              <fa-icon [icon]="faCircle" class="text-black" transform="shrink-5 down-7 right-7"></fa-icon>
+              <fa-icon [icon]="(currentUserId == 0) ? faAdd : faPencil"
+                       class="text-white"
+                       [transform]="(currentUserId == 0) ? 'shrink-7 down-8 right-8' : 'shrink-9 down-8 right-8'">
+              </fa-icon>
             </fa-layers>
-            Añadir usuario
+            {{currentUserId == 0 ? 'Añadir' : 'Editar'}}
+            usuario
+          </button>
+          <button type="button" class="btn btn-danger" (click)="resetForm()">
+            Resetear formulario
           </button>
         </div>
       </div>

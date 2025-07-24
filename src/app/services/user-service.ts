@@ -23,14 +23,29 @@ export class UserService {
       `${this.baseUrl}`,
       user,
       {
-      headers: {
-        'Content-Type':'application/json'
-      }
-    }));
+          headers: {
+            'Content-Type':'application/json'
+          }
+        }
+      )
+    );
+  }
+
+  public async editUser(userId: number, newUser: User) {
+    return await lastValueFrom(
+      this.http.put<User>(
+        `${this.baseUrl}/${userId}`,
+        newUser,
+        {
+          headers: {
+            'Content-Type':'application/json'
+          }
+        }
+      )
+    );
   }
 
   public async deleteUser(userId: number): Promise<User> {
     return await lastValueFrom(this.http.delete<User>(`${this.baseUrl}/${userId}`));
   }
-
 }

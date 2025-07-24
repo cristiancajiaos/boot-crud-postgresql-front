@@ -24,6 +24,7 @@ export class Layout implements OnInit {
   public faSpinner: IconDefinition = faSpinner;
 
   public loadingUsers: boolean = false;
+  public currentUserId: number = 0;
 
   public users: User[] = [];
 
@@ -51,6 +52,7 @@ export class Layout implements OnInit {
     this.loadingUsers = true;
     this.userService.getUsers().then((users) => {
       this.users = users;
+      this.sortUsers();
       this.loadingUsers = false;
     }).catch((reject) => {
       this.toastr.error("Hubo un error al obtener los usuarios");
@@ -63,18 +65,32 @@ export class Layout implements OnInit {
     let user = new User();
     user.name = userName;
 
-    this.userService.createUser(user).then((user) => {
-      this.toastr.success(`Usuario creado exitosamente`);
-      this.getUsers();
-    }).catch((reject) => {
-      this.toastr.error(`Hubo un error al crear el usuario`);
-    });
-
-    this.userForm.reset();
+    if (this.currentUserId == 0) {
+      // Nuevo usuario
+      this.userService.createUser(user).then((user) => {
+        this.toastr.success(`Usuario creado exitosamente`);
+        this.getUsers();
+        this.resetForm();
+      }).catch((reject) => {
+        this.toastr.error(`Hubo un error al crear el usuario`);
+      });
+    } else {
+      // Editar usuario
+      this.userService.editUser(this.currentUserId, user).then
+      ((user) => {
+        this.toastr.success(`Usuario editado exitosamente`);
+        this.getUsers();
+        this.resetForm();
+      }).catch((reject) => {
+        this.toastr.error(`Hubo un error al editar el usuario`);
+      });
+    }
   }
 
   public editUser(user: User): void {
-    this.toastr.success(`User ID: ${user.id}, User Name: ${user.name}`);
+    this.currentUserId = user.id;
+    this.userForm.reset();
+    this.userForm.controls['user'].setValue(user.name);
   }
 
   public deleteUser(userId: number, content: TemplateRef<any>): void {
@@ -96,6 +112,17 @@ export class Layout implements OnInit {
     .catch((reject) => {
     });
 
+  }
+
+  public resetForm(): void {
+    this.currentUserId = 0;
+    this.userForm.reset();
+  }
+
+  public sortUsers(): void {
+    this.users.sort((a, b) => {
+      return a.id - b.id
+    });
   }
 
 }
