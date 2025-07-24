@@ -3,14 +3,24 @@ import { BrowserModule, provideClientHydration, withEventReplay } from '@angular
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Layout } from './componentes/layout/layout';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
-    App
+    App,
+    Layout
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
+    FontAwesomeModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
